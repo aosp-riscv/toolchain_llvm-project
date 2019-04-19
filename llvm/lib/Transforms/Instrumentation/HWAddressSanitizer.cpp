@@ -162,6 +162,14 @@ static cl::opt<bool> ClInlineAllChecks("hwasan-inline-all-checks",
                                        cl::desc("inline all checks"),
                                        cl::Hidden, cl::init(false));
 
+static cl::opt<bool> ClAllowIfunc("hwasan-allow-ifunc",
+                                  cl::desc("allow the use of ifunc"),
+                                  cl::Hidden, cl::init(false));
+static cl::opt<bool>
+    ClCreateFrameDescriptions("hwasan-create-frame-descriptions",
+                              cl::desc("create static frame descriptions"),
+                              cl::Hidden, cl::init(true));
+
 namespace {
 
 /// An instrumentation pass implementing detection of addressability bugs
