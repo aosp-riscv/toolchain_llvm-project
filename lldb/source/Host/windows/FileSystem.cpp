@@ -12,6 +12,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+// For _SH_*
+#include <share.h>
+
 #include "lldb/Host/FileSystem.h"
 #include "lldb/Host/windows/AutoHandle.h"
 #include "lldb/Host/windows/PosixApi.h"

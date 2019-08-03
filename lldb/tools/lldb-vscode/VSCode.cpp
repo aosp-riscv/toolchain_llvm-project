@@ -16,7 +16,9 @@
 
 #if defined(_WIN32)
 #define NOMINMAX
+#ifndef __MINGW32__
 #include <Windows.h>
+#endif // __MINGW32__
 #include <fcntl.h>
 #include <io.h>
 #endif

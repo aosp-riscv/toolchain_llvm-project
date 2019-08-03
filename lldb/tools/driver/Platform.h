@@ -15,6 +15,10 @@
 #if defined(_MSC_VER)
 #include <signal.h>
 #endif
+#if defined(__MINGW32__)
+// pid_t
+#include <sys/types.h>
+#endif
 #include "lldb/Host/windows/windows.h"
 #include <inttypes.h>
 
