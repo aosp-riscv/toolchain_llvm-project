@@ -15,6 +15,9 @@
 #if defined(_MSC_VER)
 #include <signal.h>
 #endif
+#ifdef __MINGW32__
+#include <sys/types.h>
+#endif
 #include "lldb/Host/windows/windows.h"
 #include <inttypes.h>
 
