@@ -24,6 +24,8 @@
 
 #endif // _WIN32
 
+#include <stdint.h>
+
 // Common definitions:
 
 // Function return status
@@ -37,9 +39,9 @@ const bool failure = false;
 
 // Portability issues
 #ifdef _WIN64
-typedef unsigned __int64 size_t;
-typedef __int64 MIint;
-typedef unsigned __int64 MIuint;
+typedef uint64_t size_t;
+typedef int64_t MIint;
+typedef uint64_t MIuint;
 #else
 #ifdef _WIN32
 typedef unsigned int size_t;

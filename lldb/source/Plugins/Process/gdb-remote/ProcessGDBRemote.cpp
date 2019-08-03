@@ -16,6 +16,10 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #endif
+#ifdef __MINGW32__
+// usleep
+#include <unistd.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
