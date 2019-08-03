@@ -16,6 +16,11 @@
 #include <mutex>
 #include <sstream>
 
+#ifdef __MINGW32__
+// usleep
+#include <unistd.h>
+#endif
+
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Threading.h"
 

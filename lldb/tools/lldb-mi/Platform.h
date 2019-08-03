@@ -70,7 +70,7 @@ typedef void (*sighandler_t)(int);
 #define SIGSTOP 23  // Stop executing (cannot be caught or ignored)
 #define SIGWINCH 28 // (== SIGVTALRM)
 
-#else
+#elif !defined(__MINGW32__)
 
 #include <inttypes.h>
 #include <limits.h>
