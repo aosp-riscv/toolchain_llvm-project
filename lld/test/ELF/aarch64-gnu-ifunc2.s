@@ -30,7 +30,7 @@
 # CHECK-NEXT:   220000:
 
 # RELOC:      Relocations [
-# RELOC-NEXT:   Section {{.*}} .rela.plt {
+# RELOC-NEXT:   Section {{.*}} .rela.dyn {
 # RELOC-NEXT:     0x220000 R_AARCH64_IRELATIVE - 0x210000
 # RELOC-NEXT:   }
 # RELOC-NEXT: ]
