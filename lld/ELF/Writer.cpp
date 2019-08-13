@@ -1759,8 +1759,6 @@ template <class ELFT> void Writer<ELFT>::finalizeSections() {
     reportUndefinedSymbols<ELFT>();
   }
 
-  addIRelativeRelocs();
-
   if (in.plt && in.plt->isNeeded())
     in.plt->addSymbols();
   if (in.iplt && in.iplt->isNeeded())
