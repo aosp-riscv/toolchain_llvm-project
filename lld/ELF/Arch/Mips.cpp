@@ -35,7 +35,7 @@ public:
   void writeGotPlt(uint8_t *buf, const Symbol &s) const override;
   void writePltHeader(uint8_t *buf) const override;
   void writePlt(uint8_t *buf, uint64_t gotPltEntryAddr, uint64_t pltEntryAddr,
-                int32_t index, unsigned relOff) const override;
+                int32_t index) const override;
   bool needsThunk(RelExpr expr, RelType type, const InputFile *file,
                   uint64_t branchAddr, const Symbol &s) const override;
   void relocateOne(uint8_t *loc, RelType type, uint64_t val) const override;
@@ -305,8 +305,7 @@ template <class ELFT> void MIPS<ELFT>::writePltHeader(uint8_t *buf) const {
 
 template <class ELFT>
 void MIPS<ELFT>::writePlt(uint8_t *buf, uint64_t gotPltEntryAddr,
-                          uint64_t pltEntryAddr, int32_t index,
-                          unsigned relOff) const {
+                          uint64_t pltEntryAddr, int32_t /*index*/) const {
   const endianness e = ELFT::TargetEndianness;
   if (isMicroMips()) {
     // Overwrite trap instructions written by Writer::writeTrapInstr.
