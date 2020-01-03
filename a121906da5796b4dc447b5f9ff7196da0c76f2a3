@@ -1,0 +1,8 @@
+Code-Review+2: Yi Kong <yikong@google.com>
+Presubmit-Verified+1: Treehugger Robot <treehugger-gerrit@google.com>
+Lint+1: Lint 🤖 <android-build-prod-ayeaye@system.gserviceaccount.com>
+Submitted-by: Chih-hung Hsieh <chh@google.com>
+Submitted-at: Fri, 03 Jan 2020 22:33:19 +0000
+Reviewed-on: https://android-review.googlesource.com/c/toolchain/llvm-project/+/1199904
+Project: toolchain/llvm-project
+Branch: refs/heads/master-legacy
