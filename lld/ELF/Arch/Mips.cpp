@@ -38,7 +38,8 @@ public:
                 int32_t index) const override;
   bool needsThunk(RelExpr expr, RelType type, const InputFile *file,
                   uint64_t branchAddr, const Symbol &s) const override;
-  void relocateOne(uint8_t *loc, RelType type, uint64_t val) const override;
+  void relocate(uint8_t *loc, const Relocation &rel,
+                uint64_t val) const override;
   bool usesOnlyLowPageBits(RelType type) const override;
 };
 } // namespace
@@ -260,12 +261,12 @@ template <class ELFT> void MIPS<ELFT>::writePltHeader(uint8_t *buf) const {
       write16<e>(buf + 18, 0x0f83); // move    $28, $3
       write16<e>(buf + 20, 0x472b); // jalrc   $25
       write16<e>(buf + 22, 0x0c00); // nop
-      relocateOne(buf, R_MICROMIPS_PC19_S2, gotPlt - plt);
+      relocateNoSym(buf, R_MICROMIPS_PC19_S2, gotPlt - plt);
     } else {
       write16<e>(buf + 18, 0x45f9); // jalrc   $25
       write16<e>(buf + 20, 0x0f83); // move    $28, $3
       write16<e>(buf + 22, 0x0c00); // nop
-      relocateOne(buf, R_MICROMIPS_PC23_S2, gotPlt - plt);
+      relocateNoSym(buf, R_MICROMIPS_PC23_S2, gotPlt - plt);
     }
     return;
   }
@@ -316,13 +317,13 @@ void MIPS<ELFT>::writePlt(uint8_t *buf, uint64_t gotPltEntryAddr,
       write16<e>(buf + 4, 0xff22);  // lw $25, 0($2)
       write16<e>(buf + 8, 0x0f02);  // move $24, $2
       write16<e>(buf + 10, 0x4723); // jrc $25 / jr16 $25
-      relocateOne(buf, R_MICROMIPS_PC19_S2, gotPltEntryAddr - pltEntryAddr);
+      relocateNoSym(buf, R_MICROMIPS_PC19_S2, gotPltEntryAddr - pltEntryAddr);
     } else {
       write16<e>(buf, 0x7900);      // addiupc $2, (GOTPLT) - .
       write16<e>(buf + 4, 0xff22);  // lw $25, 0($2)
       write16<e>(buf + 8, 0x4599);  // jrc $25 / jr16 $25
       write16<e>(buf + 10, 0x0f02); // move $24, $2
-      relocateOne(buf, R_MICROMIPS_PC23_S2, gotPltEntryAddr - pltEntryAddr);
+      relocateNoSym(buf, R_MICROMIPS_PC23_S2, gotPltEntryAddr - pltEntryAddr);
     }
     return;
   }
@@ -522,8 +523,10 @@ static uint64_t fixupCrossModeJump(uint8_t *loc, RelType type, uint64_t val) {
 }
 
 template <class ELFT>
-void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
+void MIPS<ELFT>::relocate(uint8_t *loc, const Relocation &rel,
+                          uint64_t val) const {
   const endianness e = ELFT::TargetEndianness;
+  RelType type = rel.type;
 
   if (ELFT::Is64Bits || config->mipsN32Abi)
     std::tie(type, val) = calculateMipsRelChain(loc, type, val);
@@ -570,7 +573,7 @@ void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
     if (config->relocatable) {
       writeShuffleValue<e>(loc, val + 0x8000, 16, 16);
     } else {
-      checkInt(loc, val, 16, type);
+      checkInt(loc, val, 16, rel);
       writeShuffleValue<e>(loc, val, 16, 0);
     }
     break;
@@ -581,7 +584,7 @@ void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
   case R_MIPS_TLS_GD:
   case R_MIPS_TLS_GOTTPREL:
   case R_MIPS_TLS_LDM:
-    checkInt(loc, val, 16, type);
+    checkInt(loc, val, 16, rel);
     LLVM_FALLTHROUGH;
   case R_MIPS_CALL_LO16:
   case R_MIPS_GOT_LO16:
@@ -595,7 +598,7 @@ void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
   case R_MICROMIPS_GPREL16:
   case R_MICROMIPS_TLS_GD:
   case R_MICROMIPS_TLS_LDM:
-    checkInt(loc, val, 16, type);
+    checkInt(loc, val, 16, rel);
     writeShuffleValue<e>(loc, val, 16, 0);
     break;
   case R_MICROMIPS_CALL16:
@@ -607,7 +610,7 @@ void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
     writeShuffleValue<e>(loc, val, 16, 0);
     break;
   case R_MICROMIPS_GPREL7_S2:
-    checkInt(loc, val, 7, type);
+    checkInt(loc, val, 7, rel);
     writeShuffleValue<e>(loc, val, 7, 2);
     break;
   case R_MIPS_CALL_HI16:
@@ -660,35 +663,35 @@ void MIPS<ELFT>::relocateOne(uint8_t *loc, RelType type, uint64_t val) const {
     break;
   case R_MICROMIPS_26_S1:
   case R_MICROMIPS_PC26_S1:
-    checkInt(loc, val, 27, type);
+    checkInt(loc, val, 27, rel);
     writeShuffleValue<e>(loc, val, 26, 1);
     break;
   case R_MICROMIPS_PC7_S1:
-    checkInt(loc, val, 8, type);
+    checkInt(loc, val, 8, rel);
     writeMicroRelocation16<e>(loc, val, 7, 1);
     break;
   case R_MICROMIPS_PC10_S1:
-    checkInt(loc, val, 11, type);
+    checkInt(loc, val, 11, rel);
     writeMicroRelocation16<e>(loc, val, 10, 1);
     break;
   case R_MICROMIPS_PC16_S1:
-    checkInt(loc, val, 17, type);
+    checkInt(loc, val, 17, rel);
     writeShuffleValue<e>(loc, val, 16, 1);
     break;
   case R_MICROMIPS_PC18_S3:
-    checkInt(loc, val, 21, type);
+    checkInt(loc, val, 21, rel);
     writeShuffleValue<e>(loc, val, 18, 3);
     break;
   case R_MICROMIPS_PC19_S2:
-    checkInt(loc, val, 21, type);
+    checkInt(loc, val, 21, rel);
     writeShuffleValue<e>(loc, val, 19, 2);
     break;
   case R_MICROMIPS_PC21_S1:
-    checkInt(loc, val, 22, type);
+    checkInt(loc, val, 22, rel);
     writeShuffleValue<e>(loc, val, 21, 1);
     break;
   case R_MICROMIPS_PC23_S2:
-    checkInt(loc, val, 25, type);
+    checkInt(loc, val, 25, rel);
     writeShuffleValue<e>(loc, val, 23, 2);
     break;
   default:
