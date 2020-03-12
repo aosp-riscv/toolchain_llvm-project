@@ -1524,6 +1524,15 @@ _LIBCPP_FUNC_VIS extern "C" void __sanitizer_annotate_contiguous_container(
 #  define _LIBCPP_FOPEN_CLOEXEC_MODE
 #endif
 
+// Support for _FILE_OFFSET_BITS=64 landed gradually in Android, so the full set
+// of functions used in cstdio may not be available for low API levels when
+// using 64-bit file offsets on LP32.
+#if !defined(__ANDROID__) || !defined(__USE_FILE_OFFSET64) ||                  \
+    (__ANDROID_API__ >= 24)
+#define _LIBCPP_HAS_FGETPOS
+#define _LIBCPP_HAS_FSETPOS
+#endif
+
 #endif // __cplusplus
 
 #endif // _LIBCPP_CONFIG
