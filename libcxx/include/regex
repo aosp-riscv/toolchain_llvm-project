@@ -1000,7 +1000,11 @@ public:
     typedef _CharT                  char_type;
     typedef basic_string<char_type> string_type;
     typedef locale                  locale_type;
+#ifdef __BIONIC__
+    typedef uint16_t char_class_type;
+#else
     typedef ctype_base::mask        char_class_type;
+#endif
 
     static const char_class_type __regex_word = ctype_base::__regex_word;
 private:
