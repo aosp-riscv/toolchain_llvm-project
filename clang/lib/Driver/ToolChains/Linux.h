@@ -49,6 +49,10 @@ public:
 
   std::vector<std::string> ExtraOpts;
 
+  const char *getDefaultLinker() const override {
+    return getTriple().isAndroid() ? "ld.lld" : Generic_ELF::getDefaultLinker();
+  }
+
 protected:
   Tool *buildAssembler() const override;
   Tool *buildLinker() const override;
