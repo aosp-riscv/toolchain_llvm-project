@@ -26,7 +26,7 @@ class TestFormat(LibcxxTestFormat):
                  execute_external,
                  target_info):
         super(TestFormat, self).__init__(cxx,
-                                         use_verify_for_fail=False,
+                                         use_verify_for_fail=True,
                                          execute_external=execute_external,
                                          executor=NoopExecutor(target_info),
                                          exec_env={})
