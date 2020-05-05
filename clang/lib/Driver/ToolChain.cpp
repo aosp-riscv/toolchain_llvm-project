@@ -773,20 +773,26 @@ ToolChain::RuntimeLibType ToolChain::GetRuntimeLibType(
   return GetDefaultRuntimeLibType();
 }
 
+ToolChain::UnwindLibType ToolChain::GetDefaultUnwindLibType(
+    ToolChain::RuntimeLibType RtLibType) const {
+  if (RtLibType == ToolChain::RLT_CompilerRT)
+    return ToolChain::UNW_None;
+  else if (RtLibType == ToolChain::RLT_Libgcc)
+    return ToolChain::UNW_Libgcc;
+  return ToolChain::UNW_None;
+}
+
 ToolChain::UnwindLibType ToolChain::GetUnwindLibType(
     const ArgList &Args) const {
   const Arg *A = Args.getLastArg(options::OPT_unwindlib_EQ);
   StringRef LibName = A ? A->getValue() : CLANG_DEFAULT_UNWINDLIB;
+  RuntimeLibType RtLibType = GetRuntimeLibType(Args);
 
   if (LibName == "none")
     return ToolChain::UNW_None;
-  else if (LibName == "platform" || LibName == "") {
-    ToolChain::RuntimeLibType RtLibType = GetRuntimeLibType(Args);
-    if (RtLibType == ToolChain::RLT_CompilerRT)
-      return ToolChain::UNW_None;
-    else if (RtLibType == ToolChain::RLT_Libgcc)
-      return ToolChain::UNW_Libgcc;
-  } else if (LibName == "libunwind") {
+  else if (LibName == "platform" || LibName == "")
+    return GetDefaultUnwindLibType(RtLibType);
+  else if (LibName == "libunwind") {
     if (GetRuntimeLibType(Args) == RLT_Libgcc)
       getDriver().Diag(diag::err_drv_incompatible_unwindlib);
     return ToolChain::UNW_CompilerRT;
@@ -797,7 +803,7 @@ ToolChain::UnwindLibType ToolChain::GetUnwindLibType(
     getDriver().Diag(diag::err_drv_invalid_unwindlib_name)
         << A->getAsString(Args);
 
-  return GetDefaultUnwindLibType();
+  return GetDefaultUnwindLibType(RtLibType);
 }
 
 ToolChain::CXXStdlibType ToolChain::GetCXXStdlibType(const ArgList &Args) const{

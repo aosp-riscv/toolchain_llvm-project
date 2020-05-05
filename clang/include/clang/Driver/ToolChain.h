@@ -383,9 +383,8 @@ public:
     return ToolChain::CST_Libstdcxx;
   }
 
-  virtual UnwindLibType GetDefaultUnwindLibType() const {
-    return ToolChain::UNW_None;
-  }
+  virtual UnwindLibType
+  GetDefaultUnwindLibType(RuntimeLibType RtLibType) const;
 
   virtual std::string getCompilerRTPath() const;
 

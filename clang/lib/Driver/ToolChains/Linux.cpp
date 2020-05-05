@@ -456,6 +456,15 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
   addPathIfExists(D, SysRoot + "/usr/lib", Paths);
 }
 
+ToolChain::UnwindLibType
+Linux::GetDefaultUnwindLibType(ToolChain::RuntimeLibType RtLibType) const {
+  if (getTriple().isAndroid()) {
+    return RtLibType == ToolChain::RLT_CompilerRT ? ToolChain::UNW_CompilerRT
+                                                  : ToolChain::UNW_None;
+  }
+  return Generic_ELF::GetDefaultUnwindLibType(RtLibType);
+}
+
 ToolChain::CXXStdlibType Linux::GetDefaultCXXStdlibType() const {
   if (getTriple().isAndroid())
     return ToolChain::CST_Libcxx;
