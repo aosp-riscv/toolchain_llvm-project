@@ -33,6 +33,7 @@ public:
                           llvm::opt::ArgStringList &CC1Args) const override;
   void AddIAMCUIncludeArgs(const llvm::opt::ArgList &DriverArgs,
                            llvm::opt::ArgStringList &CC1Args) const override;
+  RuntimeLibType GetDefaultRuntimeLibType() const override;
   UnwindLibType GetDefaultUnwindLibType(RuntimeLibType RtLibType) const override;
   CXXStdlibType GetDefaultCXXStdlibType() const override;
   bool isPIEDefault() const override;
