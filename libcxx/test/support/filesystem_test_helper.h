@@ -24,6 +24,20 @@
 # include <sys/un.h>
 #endif
 
+// Disallowed by security policy on Android.
+#define TESTS_CAN_USE_FIFO !defined(__ANDROID__)
+
+// OS X and FreeBSD doesn't support socket files, and Android's security policy
+// disallows their creation in the temp directory.
+#define TESTS_CAN_USE_SOCKET                                                   \
+  !defined(__FreeBSD__) && !defined(__APPLE__) && !defined(__ANDROID__)
+
+#define TESTS_CAN_USE_IRREGULAR_FILES                                          \
+  ((TESTS_CAN_USE_FIFO) || (TESTS_CAN_USE_SOCKET))
+
+// Disallowed by security policy on Android.
+#define TESTS_CAN_USE_HARD_LINKS !defined(__ANDROID__)
+
 // static test helpers
 
 namespace StaticEnv {
@@ -222,6 +236,7 @@ struct scoped_test_env
         return to;
     }
 
+#if TESTS_CAN_USE_HARD_LINKS
     std::string create_hardlink(std::string source, std::string to) {
         source = sanitize_path(std::move(source));
         to = sanitize_path(std::move(to));
@@ -230,7 +245,9 @@ struct scoped_test_env
         assert(ret == 0);
         return to;
     }
+#endif
 
+#if TESTS_CAN_USE_FIFO
     std::string create_fifo(std::string file) {
         file = sanitize_path(std::move(file));
         std::string cmd = "mkfifo " + file;
@@ -238,10 +255,9 @@ struct scoped_test_env
         assert(ret == 0);
         return file;
     }
+#endif
 
-  // OS X and FreeBSD doesn't support socket files so we shouldn't even
-  // allow tests to call this unguarded.
-#if !defined(__FreeBSD__) && !defined(__APPLE__)
+#if TESTS_CAN_USE_SOCKET
     std::string create_socket(std::string file) {
         file = sanitize_path(std::move(file));
 
@@ -252,6 +268,21 @@ struct scoped_test_env
         int fd = ::socket(AF_UNIX, SOCK_STREAM, 0);
         ::bind(fd, reinterpret_cast<::sockaddr*>(&address), sizeof(address));
         return file;
+    }
+#endif
+
+#if TESTS_CAN_USE_IRREGULAR_FILES
+    // Creates some kind of non-regular file that is supported by the target
+    // system. Used for any tests that just need something where is_other() is
+    // true but aren't picky about the actual type of file.
+    std::string create_other(std::string file) {
+#if TESTS_CAN_USE_FIFO
+        return create_fifo(file);
+#elif TESTS_CAN_USE_SOCKET
+        return create_socket(file);
+#else
+#error Platform not supported
+#endif
     }
 #endif
 

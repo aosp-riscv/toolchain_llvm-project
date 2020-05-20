@@ -70,6 +70,7 @@ TEST_CASE(basic) {
     TEST_CHECK(!ec);
   }
   env.create_file("file", 99);
+#if TESTS_CAN_USE_HARD_LINKS
   env.create_hardlink("file", "hl");
   {
     directory_entry ent(sym);
@@ -77,6 +78,7 @@ TEST_CASE(basic) {
     TEST_CHECK(ent.hard_link_count(ec) == 2);
     TEST_CHECK(!ec);
   }
+#endif
 }
 
 TEST_CASE(not_regular_file) {
@@ -84,13 +86,18 @@ TEST_CASE(not_regular_file) {
 
   scoped_test_env env;
   const path dir = env.create_dir("dir");
-  const path dir2 = env.create_dir("dir/dir2");
-  const path fifo = env.create_fifo("dir/fifo");
-  const path sym_to_fifo = env.create_symlink("dir/fifo", "dir/sym");
+  const path paths[] =
+  { dir,
+    env.create_dir("dir/dir2"),
+#if TESTS_CAN_USE_IRREGULAR_FILES
+    env.create_other("dir/other"),
+    env.create_symlink("dir/other", "dir/sym"),
+#endif
+  };
 
   const perms old_perms = status(dir).permissions();
 
-  for (auto p : {dir2, fifo, sym_to_fifo}) {
+  for (auto p : paths) {
     permissions(dir, old_perms);
     std::error_code dummy_ec = GetTestEC();
     directory_entry ent(p, dummy_ec);

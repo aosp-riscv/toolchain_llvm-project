@@ -92,7 +92,7 @@ TEST_CASE(test_directory_access_denied)
     TEST_CHECK_THROW(filesystem_error, is_empty(dir));
 }
 
-
+#if TESTS_CAN_USE_FIFO
 TEST_CASE(test_fifo_fails)
 {
     scoped_test_env env;
@@ -105,5 +105,21 @@ TEST_CASE(test_fifo_fails)
 
     TEST_CHECK_THROW(filesystem_error, is_empty(fifo));
 }
+#endif
+
+#if TESTS_CAN_USE_SOCKET
+TEST_CASE(test_socket_fails)
+{
+    scoped_test_env env;
+    const path socket = env.create_socket("socket");
+
+    std::error_code ec = GetTestEC();
+    TEST_CHECK(is_empty(socket, ec) == false);
+    TEST_CHECK(ec);
+    TEST_CHECK(ec != GetTestEC());
+
+    TEST_CHECK_THROW(filesystem_error, is_empty(socket));
+}
+#endif
 
 TEST_SUITE_END()

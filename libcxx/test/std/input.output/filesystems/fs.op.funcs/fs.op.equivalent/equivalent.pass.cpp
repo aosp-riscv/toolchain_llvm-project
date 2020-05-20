@@ -86,6 +86,7 @@ TEST_CASE(equivalent_reports_error_if_input_dne) {
   }
 }
 
+#if TESTS_CAN_USE_HARD_LINKS
 TEST_CASE(equivalent_hardlink_succeeds) {
   scoped_test_env env;
   path const file = env.create_file("file", 42);
@@ -95,18 +96,21 @@ TEST_CASE(equivalent_hardlink_succeeds) {
   TEST_CHECK(equivalent(file, hl2));
   TEST_CHECK(equivalent(hl1, hl2));
 }
+#endif
 
+#if TESTS_CAN_USE_IRREGULAR_FILES
 TEST_CASE(equivalent_is_other_succeeds) {
   scoped_test_env env;
   path const file = env.create_file("file", 42);
-  const path fifo1 = env.create_fifo("fifo1");
-  const path fifo2 = env.create_fifo("fifo2");
+  const path other1 = env.create_other("other1");
+  const path other2 = env.create_other("other2");
   // Required to test behavior for inputs where is_other(p) is true.
-  TEST_REQUIRE(is_other(fifo1));
-  TEST_CHECK(!equivalent(file, fifo1));
-  TEST_CHECK(!equivalent(fifo2, file));
-  TEST_CHECK(!equivalent(fifo1, fifo2));
-  TEST_CHECK(equivalent(fifo1, fifo1));
+  TEST_REQUIRE(is_other(other1));
+  TEST_CHECK(!equivalent(file, other1));
+  TEST_CHECK(!equivalent(other2, file));
+  TEST_CHECK(!equivalent(other1, other2));
+  TEST_CHECK(equivalent(other1, other1));
 }
+#endif
 
 TEST_SUITE_END()

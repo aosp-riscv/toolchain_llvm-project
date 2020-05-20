@@ -66,8 +66,10 @@ TEST_CASE(test_error_reporting)
     scoped_test_env env;
     const path file = env.create_file("file1", 42);
     const path dir = env.create_dir("dir");
-    const path fifo = env.create_fifo("fifo");
-    TEST_REQUIRE(is_other(fifo));
+#if TESTS_CAN_USE_IRREGULAR_FILES
+    const path other = env.create_other("other");
+    TEST_REQUIRE(is_other(other));
+#endif
 
     const auto test_ec = GetTestEC();
 
@@ -95,20 +97,22 @@ TEST_CASE(test_error_reporting)
         TEST_REQUIRE(ec != test_ec);
         TEST_CHECK(checkThrow(dir, file, ec));
     }
+#if TESTS_CAN_USE_IRREGULAR_FILES
     { // is_other(from)
         std::error_code ec = test_ec;
-        fs::copy(fifo, dir, ec);
+        fs::copy(other, dir, ec);
         TEST_REQUIRE(ec);
         TEST_REQUIRE(ec != test_ec);
-        TEST_CHECK(checkThrow(fifo, dir, ec));
+        TEST_CHECK(checkThrow(other, dir, ec));
     }
     { // is_other(to)
         std::error_code ec = test_ec;
-        fs::copy(file, fifo, ec);
+        fs::copy(file, other, ec);
         TEST_REQUIRE(ec);
         TEST_REQUIRE(ec != test_ec);
-        TEST_CHECK(checkThrow(file, fifo, ec));
+        TEST_CHECK(checkThrow(file, other, ec));
     }
+#endif
 }
 
 TEST_CASE(from_is_symlink)
@@ -166,6 +170,7 @@ TEST_CASE(from_is_regular_file)
         TEST_CHECK(is_symlink(dest));
         TEST_CHECK(equivalent(file, canonical(dest)));
     }
+#if TESTS_CAN_USE_HARD_LINKS
     { // create hard link to file
         const path dest = env.make_env_path("hardlink");
         TEST_CHECK(hard_link_count(file) == 1);
@@ -175,6 +180,7 @@ TEST_CASE(from_is_regular_file)
         TEST_CHECK(exists(dest));
         TEST_CHECK(hard_link_count(file) == 2);
     }
+#endif
     { // is_directory(t)
         const path dest_dir = env.create_dir("dest_dir");
         const path expect_dest = dest_dir / file.filename();
