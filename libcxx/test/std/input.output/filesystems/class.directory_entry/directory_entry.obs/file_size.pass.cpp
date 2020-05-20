@@ -86,7 +86,9 @@ TEST_CASE(not_regular_file) {
     std::errc expected_err;
   } TestCases[] = {
       {env.create_dir("dir"), std::errc::is_a_directory},
-      {env.create_fifo("fifo"), std::errc::not_supported},
+#if TESTS_CAN_USE_IRREGULAR_FILES
+      {env.create_other("other"), std::errc::not_supported},
+#endif
       {env.create_symlink("dir", "sym"), std::errc::is_a_directory}};
 
   for (auto const& TC : TestCases) {

@@ -71,6 +71,7 @@ TEST_CASE(hard_link_count_for_directory)
                hard_link_count(StaticEnv::Dir3, ec) == Dir3ExpectAlt ||
                hard_link_count(StaticEnv::Dir3) == 1);
 }
+#if TESTS_CAN_USE_HARD_LINKS
 TEST_CASE(hard_link_count_increments_test)
 {
     scoped_test_env env;
@@ -80,6 +81,7 @@ TEST_CASE(hard_link_count_increments_test)
     env.create_hardlink(file, "file_hl");
     TEST_CHECK(hard_link_count(file) == 2);
 }
+#endif
 
 
 TEST_CASE(hard_link_count_error_cases)

@@ -63,11 +63,24 @@ TEST_CASE(test_without_ec) {
   using fs::path;
 
   scoped_test_env env;
-  path f = env.create_file("foo", 42);
-  path d = env.create_dir("dir");
-  path fifo = env.create_fifo("fifo");
-  path hl = env.create_hardlink("foo", "hl");
-  for (auto p : {hl, f, d, fifo}) {
+  path paths[] = {
+#if TESTS_CAN_USE_HARD_LINKS
+    env.create_hardlink("foo", "hl"),
+#endif
+    env.create_file("foo", 42),
+    env.create_dir("dir"),
+#if TESTS_CAN_USE_IRREGULAR_FILES
+    env.create_other("other"),
+#endif
+#if TESTS_CAN_USE_FIFO
+    env.create_fifo("fifo"),
+#endif
+#if TESTS_CAN_USE_SOCKET
+    env.create_socket("socket"),
+#endif
+  };
+
+  for (auto p : paths) {
     directory_entry e(p);
     file_status st = status(p);
     file_status sym_st = symlink_status(p);
@@ -93,11 +106,24 @@ TEST_CASE(test_with_ec) {
   using fs::path;
 
   scoped_test_env env;
-  path f = env.create_file("foo", 42);
-  path d = env.create_dir("dir");
-  path fifo = env.create_fifo("fifo");
-  path hl = env.create_hardlink("foo", "hl");
-  for (auto p : {hl, f, d, fifo}) {
+  path paths[] = {
+#if TESTS_CAN_USE_HARD_LINKS
+    env.create_hardlink("foo", "hl"),
+#endif
+    env.create_file("foo", 42),
+    env.create_dir("dir"),
+#if TESTS_CAN_USE_IRREGULAR_FILES
+    env.create_other("other"),
+#endif
+#if TESTS_CAN_USE_FIFO
+    env.create_fifo("fifo"),
+#endif
+#if TESTS_CAN_USE_SOCKET
+    env.create_socket("socket"),
+#endif
+  };
+
+  for (auto p : paths) {
     directory_entry e(p);
     std::error_code status_ec = GetTestEC();
     std::error_code sym_status_ec = GetTestEC(1);

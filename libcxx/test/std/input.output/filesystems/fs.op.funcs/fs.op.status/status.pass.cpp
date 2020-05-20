@@ -114,10 +114,12 @@ TEST_CASE(status_file_types_test)
         {StaticEnv::SymlinkToDir, file_type::directory},
         // Block files tested elsewhere
         {StaticEnv::CharFile, file_type::character},
-#if !defined(__APPLE__) && !defined(__FreeBSD__) // No support for domain sockets
+#if TESTS_CAN_USE_SOCKET
         {env.create_socket("socket"), file_type::socket},
 #endif
+#if TESTS_CAN_USE_FIFO
         {env.create_fifo("fifo"), file_type::fifo}
+#endif
     };
     for (const auto& TC : cases) {
         // test non-throwing case
