@@ -196,7 +196,16 @@ struct scoped_test_env
     ~scoped_test_env() {
         std::string cmd = "chmod -R 777 " + test_root.native();
         int ret = std::system(cmd.c_str());
+#if defined(__ANDROID__)
+        // Toybox's `chmod -R` for a directory containing a dangling symlink
+        // causes an error. This differs from coreutils. POSIX does not specify
+        // the behavior (it doesn't mention symlinks at all). Making toybox
+        // match coreutils is probably desireable, but this permissive mode is
+        // still required for any devices with a toybox older than that fix.
+        (void)ret;
+#else
         assert(ret == 0);
+#endif
 
         cmd = "rm -r " + test_root.native();
         ret = std::system(cmd.c_str());
