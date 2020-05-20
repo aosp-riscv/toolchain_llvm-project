@@ -56,7 +56,13 @@
 #ifndef _WIN32
 #define __allocator NASTY_MACRO
 #define __deallocate NASTY_MACRO
+// Bionic uses __out as a variable name. We can't use __BIONIC__ without
+// including another header, which we want to avoid in a `-include` context
+// (which is how this header is injected). Instead, test for a bionic-only
+// header.
+#if !__has_include(<sys/system_properties.h>)
 #define __out NASTY_MACRO
+#endif
 #endif
 
 #define __output NASTY_MACRO
