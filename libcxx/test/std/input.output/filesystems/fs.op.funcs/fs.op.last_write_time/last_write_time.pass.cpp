@@ -352,6 +352,10 @@ TEST_CASE(read_last_write_time_static_env_test)
 {
     using C = file_time_type::clock;
     file_time_type min = file_time_type::min();
+    // Update last write times, since the clock on the device running the test
+    // might be behind the cloce of the host machine.
+    last_write_time(StaticEnv::File, C::now());
+    last_write_time(StaticEnv::Dir, C::now());
     {
         file_time_type ret = last_write_time(StaticEnv::File);
         TEST_CHECK(ret != min);
