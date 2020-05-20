@@ -52,7 +52,6 @@ class Configuration(libcxx.test.config.Configuration):
 
     def configure_features(self):
         self.config.available_features.add('long_tests')
-        self.config.available_features.add('c++filesystem-disabled')
         self.config.available_features.add('libcpp-no-concepts')
 
     def configure_modules(self):
