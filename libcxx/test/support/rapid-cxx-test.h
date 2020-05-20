@@ -6,6 +6,7 @@
 # include <cstdio>
 # include <cstring>
 # include <cassert>
+#include <exception>
 
 #include "test_macros.h"
 
@@ -693,8 +694,9 @@ namespace rapid_cxx_test
                 ++m_uncaught_exceptions;
                 std::fprintf(stderr
                     , "Test case FAILED with uncaught exception:\n"
+                      "    %s\n"
                       "    last checkpoint near %s::%lu %s\n\n"
-                    , o.file, o.line, o.func
+                    , o.message, o.file, o.line, o.func
                     );
                 m_failure = o;
                 break;
@@ -812,6 +814,15 @@ namespace rapid_cxx_test
 #endif
                     tc.invoke();
 #ifndef TEST_HAS_NO_EXCEPTIONS
+                } catch (const std::exception& ex) {
+                    test_outcome o;
+                    o.type = failure_type::uncaught_exception;
+                    o.file = get_checkpoint().file;
+                    o.func = get_checkpoint().func;
+                    o.line = get_checkpoint().line;
+                    o.expression = "";
+                    o.message = ex.what();
+                    get_reporter().report(o);
                 } catch (...) {
                     test_outcome o;
                     o.type = failure_type::uncaught_exception;
