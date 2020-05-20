@@ -21,8 +21,8 @@
 #include "test_macros.h"
 #include "count_new.h"
 
-
 int main(int, char**) {
+  globalMemCounter.reset();
   using namespace fs;
   static_assert(std::is_nothrow_move_assignable<path>::value, "");
   assert(globalMemCounter.checkOutstandingNewEq(0));
