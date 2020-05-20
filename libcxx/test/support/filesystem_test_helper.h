@@ -273,7 +273,17 @@ struct scoped_test_env
         assert(file.size() <= sizeof(address.sun_path));
         ::strncpy(address.sun_path, file.c_str(), sizeof(address.sun_path));
         int fd = ::socket(AF_UNIX, SOCK_STREAM, 0);
-        ::bind(fd, reinterpret_cast<::sockaddr*>(&address), sizeof(address));
+        if (fd == -1) {
+          fprintf(stderr, "socket(\"%s\") failed: %s\n", file.c_str(),
+                  strerror(errno));
+          std::abort();
+        }
+        if (::bind(fd, reinterpret_cast< ::sockaddr*>(&address),
+                   sizeof(address)) == -1) {
+          fprintf(stderr, "bind socket \"%s\" failed: %s\n", file.c_str(),
+                  strerror(errno));
+          std::abort();
+        }
         return file;
     }
 #endif
