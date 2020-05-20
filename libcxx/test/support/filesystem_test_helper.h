@@ -40,6 +40,45 @@
 
 // static test helpers
 
+std::ostream& operator<<(std::ostream& os, const fs::file_type& ft) {
+  switch (ft) {
+  case fs::file_type::none:
+    os << "none";
+    break;
+  case fs::file_type::not_found:
+    os << "not found";
+    break;
+  case fs::file_type::regular:
+    os << "regular";
+    break;
+  case fs::file_type::directory:
+    os << "directory";
+    break;
+  case fs::file_type::symlink:
+    os << "symlink";
+    break;
+  case fs::file_type::block:
+    os << "block";
+    break;
+  case fs::file_type::character:
+    os << "character";
+    break;
+  case fs::file_type::fifo:
+    os << "fifo";
+    break;
+  case fs::file_type::socket:
+    os << "socket";
+    break;
+  case fs::file_type::unknown:
+    os << "unknown";
+    break;
+  default:
+    os << "really unknown (" << static_cast<int>(ft) << ")";
+    break;
+  }
+  return os;
+}
+
 namespace StaticEnv {
 
 // Tests that use these utilities should add '<...>/Inputs/static_test_env'
