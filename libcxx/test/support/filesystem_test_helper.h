@@ -46,7 +46,12 @@ namespace StaticEnv {
 // to their FILE_DEPENDENCIES, to make sure the directory is made available
 // to the test. Assuming that, the 'static_test_env' will be available in the
 // directory where the test is run.
-static const fs::path Root = fs::current_path() / "static_test_env";
+static const fs::path Root =
+#ifdef FILESYSTEM_STATIC_TEST_ROOT
+    TEST_STRINGIZE(FILESYSTEM_STATIC_TEST_ROOT);
+#else
+    fs::current_path() / "static_test_env";
+#endif
 
 inline fs::path makePath(fs::path const& p) {
     // env_path is expected not to contain symlinks.
