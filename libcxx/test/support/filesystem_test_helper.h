@@ -186,6 +186,13 @@ struct scoped_test_env
         auto large_file_fopen = fopen;
         auto large_file_ftruncate = ftruncate;
         using large_file_offset_t = off_t;
+#elif defined(__BIONIC__) && __ANDROID_API__ < 24
+        // Android did not have fopen64 until API 24. However, files are always
+        // opened with O_LARGEFILE so we can still ftruncate64 a file opened
+        // with the regular fopen.
+        auto large_file_fopen = fopen;
+        auto large_file_ftruncate = ftruncate64;
+        using large_file_offset_t = off64_t;
 #else
         auto large_file_fopen = fopen64;
         auto large_file_ftruncate = ftruncate64;
