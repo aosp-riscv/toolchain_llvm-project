@@ -1,0 +1,7 @@
+Code-Review+2: Elliott Hughes <enh@google.com>
+Presubmit-Verified+1: Treehugger Robot <treehugger-gerrit@google.com>
+Submitted-by: Treehugger Robot <treehugger-gerrit@google.com>
+Submitted-at: Thu, 21 May 2020 02:11:01 +0000
+Reviewed-on: https://android-review.googlesource.com/c/toolchain/llvm-project/+/1314632
+Project: toolchain/llvm-project
+Branch: refs/heads/ndk
