@@ -25,7 +25,6 @@
 #include "llvm/CodeGen/GlobalISel/RegisterBankInfo.h"
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 #include "llvm/IR/CallingConv.h"
-#include "llvm/Target/TargetMachine.h"
 #include <climits>
 #include <memory>
 
@@ -35,6 +34,7 @@
 namespace llvm {
 
 class GlobalValue;
+class TargetMachine;
 
 /// The X86 backend supports a number of different styles of PIC.
 ///
@@ -824,7 +824,7 @@ public:
     return PICStyle == PICStyles::Style::StubPIC;
   }
 
-  bool isPositionIndependent() const { return TM.isPositionIndependent(); }
+  bool isPositionIndependent() const;
 
   bool isCallingConvWin64(CallingConv::ID CC) const {
     switch (CC) {
