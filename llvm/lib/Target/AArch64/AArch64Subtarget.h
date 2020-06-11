@@ -196,6 +196,7 @@ protected:
   bool UseEL2ForTP = false;
   bool UseEL3ForTP = false;
   bool AllowTaggedGlobals = false;
+  bool HardenSlsRetBr = false;
   uint8_t MaxInterleaveFactor = 2;
   uint8_t VectorInsertExtractBaseCost = 3;
   uint16_t CacheLineSize = 0;
@@ -346,6 +347,8 @@ public:
            hasFuseAES() || hasFuseArithmeticLogic() ||
            hasFuseCCSelect() || hasFuseLiterals();
   }
+
+  bool hardenSlsRetBr() const { return HardenSlsRetBr; }
 
   bool useEL1ForTP() const { return UseEL1ForTP; }
   bool useEL2ForTP() const { return UseEL2ForTP; }
