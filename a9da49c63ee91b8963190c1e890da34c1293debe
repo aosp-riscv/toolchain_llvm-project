@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47524b23_41a5e51e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010056
+      },
+      "writtenOn": "2020-08-26T08:38:48Z",
+      "side": 1,
+      "message": "I can\u0027t add you directly as a subscriber, but the upstream LLVM CL is at https://reviews.llvm.org/D86596. You need to sign into phabricator and then you should be able to subscribe. If you expect to be making more changes to LLVM, please take a look at https://llvm.org/docs/CodeReview.html, http://llvm.org/docs/Phabricator.html, and https://llvm.org/docs/DeveloperPolicy.html#new-contributors for applying for git commit access. My team is happy to help in getting you started if you have questions too.",
+      "revId": "a9da49c63ee91b8963190c1e890da34c1293debe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
+    }
+  ]
+}
