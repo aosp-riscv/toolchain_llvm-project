@@ -16,6 +16,24 @@
       "revId": "a9da49c63ee91b8963190c1e890da34c1293debe",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4beb4c2c_82c153e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1132673
+      },
+      "writtenOn": "2020-08-27T09:07:14Z",
+      "side": 1,
+      "message": "Thanks for the help! As you can see there, I was able to update the change to fix the clang-format issue.",
+      "parentUuid": "47524b23_41a5e51e",
+      "revId": "a9da49c63ee91b8963190c1e890da34c1293debe",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889",
+      "unresolved": false
     }
   ]
 }
