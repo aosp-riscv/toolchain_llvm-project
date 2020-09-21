@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Prevent loading in the platform build.
+ifneq ($(NDK_ROOT),)
+
 LOCAL_PATH := $(call my-dir)
 
 libunwind_src_files := \
@@ -64,3 +67,5 @@ include $(BUILD_STATIC_LIBRARY)
 endif # Prebuilt/building
 
 $(call import-module, android/support)
+
+endif

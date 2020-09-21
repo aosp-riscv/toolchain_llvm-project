@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Prevent loading in the platform build.
+ifneq ($(NDK_ROOT),)
+
 LOCAL_PATH := $(call my-dir)
 
 libcxxabi_src_files := \
@@ -103,3 +106,5 @@ $(call import-module, toolchain/llvm-project/libunwind)
 endif # Prebuilt/building
 
 $(call import-module, android/support)
+
+endif

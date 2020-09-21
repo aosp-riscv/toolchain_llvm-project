@@ -1,6 +1,9 @@
 # This file is dual licensed under the MIT and the University of Illinois Open
 # Source Licenses. See LICENSE.TXT for details.
 
+# Prevent loading in the platform build.
+ifneq ($(NDK_ROOT),)
+
 LOCAL_PATH := $(call my-dir)
 
 # Normally, we distribute the NDK with prebuilt binaries of libc++
@@ -218,3 +221,5 @@ $(call import-module, toolchain/llvm-project/libcxxabi)
 endif # LIBCXX_FORCE_REBUILD == true
 
 $(call import-module, android/support)
+
+endif
