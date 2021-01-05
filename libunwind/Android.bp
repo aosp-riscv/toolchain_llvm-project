@@ -37,6 +37,9 @@ cc_library_static {
         "-Wall",
         "-Werror",
         "-D_LIBUNWIND_USE_DLADDR=0",
+        // Required to support unwinding past functions built with return
+        // pointer authentication.
+        "-D_LIBUNWIND_IS_NATIVE_ONLY",
     ],
     cppflags: [
         "-std=c++14",
