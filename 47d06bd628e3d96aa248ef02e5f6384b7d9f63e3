@@ -1,0 +1,10 @@
+Code-Review+2: Dan Albert <danalbert@google.com>
+Code-Review+2: Stephen Hines <srhines@google.com>
+Presubmit-Verified+2: Treehugger Robot <treehugger-gerrit@google.com>
+Lint+1: Lint 🤖 <ayeaye-gerrit@google.com>
+Autosubmit+1: Dan Albert <danalbert@google.com>
+Submitted-by: Treehugger Robot <treehugger-gerrit@google.com>
+Submitted-at: Mon, 25 Jan 2021 21:09:06 +0000
+Reviewed-on: https://android-review.googlesource.com/c/toolchain/llvm-project/+/1557189
+Project: toolchain/llvm-project
+Branch: refs/heads/ndk
