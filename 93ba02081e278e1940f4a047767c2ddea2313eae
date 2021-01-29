@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34099b29_a4a75630",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-01-29T23:36:04Z",
+      "side": 1,
+      "message": "I know these are supposed to be no-ops, but this change caused quite a few segfaults and alignment related SIGBUS issues in the libc++ tests. Do we need a newer toolchain before this is valid? Even with clang-r407598b this crashes. That\u0027s our newest, but it\u0027s still several months old.\n\nTo repro (I did this on a P3a XL running Android 10):\n\n```\n$ cd ndk\n$ ./checkbuild.py\n$ ./run_tests.py\n```",
+      "revId": "93ba02081e278e1940f4a047767c2ddea2313eae",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
