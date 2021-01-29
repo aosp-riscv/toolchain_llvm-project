@@ -75,6 +75,7 @@ libcxx_cxxflags := \
     -DLIBCXX_BUILDING_LIBCXXABI \
     -D_LIBCPP_BUILDING_LIBRARY \
     -D__STDC_FORMAT_MACROS \
+    -D__ANDROID_UNGUARDED_AVAILABILITY__ \
     $(libcxx_export_cxxflags) \
 
 libcxx_ldflags :=
