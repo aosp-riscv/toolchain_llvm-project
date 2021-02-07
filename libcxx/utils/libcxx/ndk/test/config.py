@@ -44,11 +44,9 @@ class Configuration(libcxx.test.config.Configuration):
             self.cxx.link_flags.append('-fuse-ld=lld')
 
         triple = self.get_lit_conf('target_triple')
-        if triple.startswith('armv7-'):
-            self.cxx.link_flags.append('-Wl,--exclude-libs,libunwind.a')
-
-        self.cxx.link_flags.append('-Wl,--exclude-libs,libatomic.a')
-        self.cxx.link_flags.append('-Wl,--exclude-libs,libgcc.a')
+        self.cxx.link_flags.append('-Wl,--exclude-libs,libunwind.a')
+        # FIXME: compiler_rt
+        # self.cxx.link_flags.append('-Wl,--exclude-libs,libgcc.a')
 
     def configure_features(self):
         self.config.available_features.add('long_tests')
