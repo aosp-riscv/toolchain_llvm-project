@@ -44,6 +44,10 @@ libcxxabi_includes := \
 libcxxabi_cflags := -D__STDC_FORMAT_MACROS
 libcxxabi_cppflags := -std=c++11 -Wno-unknown-attributes -DHAS_THREAD_LOCAL
 
+ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+    libcxxabi_cppflags += -mbranch-protection=standard
+endif
+
 ifneq (,$(filter armeabi%,$(TARGET_ARCH_ABI)))
     use_llvm_unwinder := true
     libcxxabi_cppflags += -DLIBCXXABI_USE_LLVM_UNWINDER=1
