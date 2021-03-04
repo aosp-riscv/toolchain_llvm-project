@@ -39,16 +39,16 @@ class Configuration(libcxx.test.config.Configuration):
     def configure_target_info(self):
         self.target_info = AndroidTargetInfo(self)
 
+    def configure_compile_flags(self):
+        super(Configuration, self).configure_compile_flags()
+        self.cxx.compile_flags.append('--rtlib=compiler-rt')
+
     def configure_link_flags(self):
-        if self.get_lit_conf('linker') == 'lld':
-            self.cxx.link_flags.append('-fuse-ld=lld')
-
-        triple = self.get_lit_conf('target_triple')
-        if triple.startswith('armv7-'):
-            self.cxx.link_flags.append('-Wl,--exclude-libs,libunwind.a')
-
+        self.cxx.link_flags.append('--rtlib=compiler-rt')
+        self.cxx.link_flags.append('-lunwind')
+        self.cxx.link_flags.append('-ldl')
+        self.cxx.link_flags.append('-Wl,--exclude-libs,libunwind.a')
         self.cxx.link_flags.append('-Wl,--exclude-libs,libatomic.a')
-        self.cxx.link_flags.append('-Wl,--exclude-libs,libgcc.a')
 
     def configure_features(self):
         self.config.available_features.add('long_tests')

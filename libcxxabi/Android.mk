@@ -42,15 +42,11 @@ libcxxabi_includes := \
     $(LOCAL_PATH)/../libcxx/include \
 
 libcxxabi_cflags := -D__STDC_FORMAT_MACROS
-libcxxabi_cppflags := -std=c++11 -Wno-unknown-attributes -DHAS_THREAD_LOCAL
-
-ifneq (,$(filter armeabi%,$(TARGET_ARCH_ABI)))
-    use_llvm_unwinder := true
-    libcxxabi_cppflags += -DLIBCXXABI_USE_LLVM_UNWINDER=1
-else
-    use_llvm_unwinder := false
-    libcxxabi_cppflags += -DLIBCXXABI_USE_LLVM_UNWINDER=0
-endif
+libcxxabi_cppflags := \
+    -std=c++11 \
+    -Wno-unknown-attributes \
+    -DHAS_THREAD_LOCAL \
+    -DLIBCXXABI_USE_LLVM_UNWINDER=1 \
 
 ifneq ($(LIBCXX_FORCE_REBUILD),true) # Using prebuilt
 
@@ -58,15 +54,6 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libc++abi
 LOCAL_SRC_FILES := ../llvm-libc++/libs/$(TARGET_ARCH_ABI)/$(LOCAL_MODULE)$(TARGET_LIB_EXTENSION)
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
-
-# Unlike the platform build, ndk-build will actually perform dependency checking
-# on static libraries and topologically sort them to determine link order.
-# Though there is no link step, without this we may link libunwind before
-# libc++abi, which won't succeed.
-ifeq ($(use_llvm_unwinder),true)
-    LOCAL_STATIC_LIBRARIES += libunwind
-    LOCAL_EXPORT_STATIC_LIBRARIES := libunwind
-endif
 include $(PREBUILT_STATIC_LIBRARY)
 
 else # Building
@@ -87,18 +74,9 @@ ifeq ($(NDK_PLATFORM_NEEDS_ANDROID_SUPPORT),true)
     LOCAL_STATIC_LIBRARIES += libandroid_support
 endif
 
-# Unlike the platform build, ndk-build will actually perform dependency checking
-# on static libraries and topologically sort them to determine link order.
-# Though there is no link step, without this we may link libunwind before
-# libc++abi, which won't succeed.
-ifeq ($(use_llvm_unwinder),true)
-    LOCAL_STATIC_LIBRARIES += libunwind
-    LOCAL_EXPORT_STATIC_LIBRARIES := libunwind
-endif
 include $(BUILD_STATIC_LIBRARY)
 
 $(call import-add-path, $(LOCAL_PATH)/../..)
-$(call import-module, toolchain/llvm-project/libunwind)
 
 endif # Prebuilt/building
 
