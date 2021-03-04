@@ -139,12 +139,15 @@ endif
 include $(PREBUILT_SHARED_LIBRARY)
 
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+# Define a prebuilt module for libunwind.a so that ndk-build adds it to the
+# linker command-line before any shared libraries, ensuring that the unwinder
+# is linked statically even if a shared library dependency exports an unwinder.
+#
 # We define this module here rather than in a separate cxx-stl/libunwind because
 # we don't actually want to make the API available (yet).
 include $(CLEAR_VARS)
 LOCAL_MODULE := libunwind
-LOCAL_SRC_FILES := libs/$(TARGET_ARCH_ABI)/$(LOCAL_MODULE)$(TARGET_LIB_EXTENSION)
-LOCAL_EXPORT_LDLIBS := -ldl
+LOCAL_SRC_FILES := $(NDK_TOOLCHAIN_LIB_DIR)/$(TARGET_TOOLCHAIN_ARCH_LIB_DIR)/libunwind.a
 include $(PREBUILT_STATIC_LIBRARY)
 endif
 
