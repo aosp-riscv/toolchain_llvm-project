@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20740d8d_9c46d0d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1268141
+      },
+      "writtenOn": "2021-03-10T15:39:42Z",
+      "side": 1,
+      "message": "This is how I tried to remove libgcc / libatomic / libunwind dependencies.\nI have been using a toolchain which defaults to \u0027--rtlib\u003dcompiler-rt\u0027.\nAll tests pass on Pixel 2 (Android 10) except for one\n(libcxx/test/std/iterators/iterator.primitives/iterator.traits/empty.fail.cpp)\nwhich simply requires the update of libcxx.\n\nI had noticed https://android-review.googlesource.com/c/toolchain/llvm-project/+/1618620 before but I thought this one was still worth the push.",
+      "revId": "d6982c3b9a6126b70b09b71fff9ef9208924c303",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
