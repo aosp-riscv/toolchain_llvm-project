@@ -1298,7 +1298,15 @@ INTERCEPTOR(int, prctl, int option, unsigned long arg2, unsigned long arg3,
   void *ctx;
   COMMON_INTERCEPTOR_ENTER(ctx, prctl, option, arg2, arg3, arg4, arg5);
   static const int PR_SET_NAME = 15;
-  int res = REAL(prctl(option, arg2, arg3, arg4, arg5));
+  static const int PR_PAC_RESET_KEYS = 54;
+  if (option == PR_PAC_RESET_KEYS) {
+      // Because the compiler or run-time environment may be using some
+      // or all of the keys, a successful PR_PAC_RESET_KEYS may crash
+      // the calling process.
+      Printf("Do not use PR_PAC_RESET_KEYS when using compiler run-time.");
+      return -errno_EINVAL;
+  }
+  int res = REAL(prctl)(option, arg2, arg3, arg4, arg5);
   if (option == PR_SET_NAME) {
     char buff[16];
     internal_strncpy(buff, (char *)arg2, 15);
