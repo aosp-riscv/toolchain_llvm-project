@@ -1202,6 +1202,8 @@ bool MatchASTVisitor::TraverseDecl(Decl *DeclNode) {
   if (!DeclNode) {
     return true;
   }
+  if (Options.Filter && Options.Filter->skipLocation(DeclNode->getLocation()))
+    return true;
 
   bool ScopedTraversal =
       TraversingASTNodeNotSpelledInSource || DeclNode->isImplicit();
@@ -1232,6 +1234,13 @@ bool MatchASTVisitor::TraverseStmt(Stmt *StmtNode, DataRecursionQueue *Queue) {
   if (!StmtNode) {
     return true;
   }
+  // When a function call is in the main file or wanted header files,
+  // the call site maybe in the Decl that is not to be skipped.
+  // But the statements of the called function or parameter default expressions
+  // should be skipped. So here we need to call skipLocation here.
+  if (Options.Filter && Options.Filter->skipLocation(StmtNode->getBeginLoc()))
+    return true;
+
   bool ScopedTraversal = TraversingASTNodeNotSpelledInSource ||
                          TraversingASTChildrenNotSpelledInSource;
 
@@ -1453,6 +1462,8 @@ llvm::Optional<TraversalKind>
 MatchFinder::MatchCallback::getCheckTraversalKind() const {
   return llvm::None;
 }
+
+MatchFinder::MatchFinderOptions::LocFilter::~LocFilter() = default;
 
 } // end namespace ast_matchers
 } // end namespace clang
