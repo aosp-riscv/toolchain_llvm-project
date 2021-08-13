@@ -10,7 +10,7 @@
 //
 // --skip-headers skips included files; finds only warnings in the main file.
 // RUN: clang-tidy %s -checks='*' --skip-headers -- \
-// RUN: 2>&1 | FileCheck %s -check-prefixes WARN,MAIN,HINT
+// RUN: 2>&1 | FileCheck %s -check-prefixes WARN,MAIN,NO_HINT
 // later:    no_hint -implicit-check-not="{{warning|error}}:"
 //
 // --show-all-warnings reports all warnings, even without --header-filters
@@ -35,7 +35,7 @@
 // use --skip-headers and --header-filter='header2.h'
 // to skip header1.h but not header2.h
 // RUN: clang-tidy %s -checks='*' --skip-headers --header-filter='header2.h' \
-// RUN: 2>&1 | FileCheck %s -check-prefixes WARN,WARN2,MAIN,HINT
+// RUN: 2>&1 | FileCheck %s -check-prefixes WARN,WARN2,MAIN,NO_HINT
 // later:  no_hint
 
 // WARN: {{[0-9]+}} warnings generated.
