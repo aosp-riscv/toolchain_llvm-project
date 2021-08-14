@@ -69,7 +69,7 @@ public:
     CheckFactories.registerCheck<TimeSubtractionCheck>(
         "abseil-time-subtraction");
     CheckFactories.registerCheck<UpgradeDurationConversionsCheck>(
-        "abseil-upgrade-duration-conversions");
+        "abseil-upgrade-duration-conversions", true);
   }
 };
 
