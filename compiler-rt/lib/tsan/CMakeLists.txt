@@ -3,6 +3,13 @@
 include_directories(..)
 
 set(TSAN_CFLAGS ${SANITIZER_COMMON_CFLAGS})
+set(TSAN_DYNAMIC_LINK_FLAGS ${SANITIZER_COMMON_LINK_FLAGS})
+
+set(TSAN_DYNAMIC_CFLAGS ${TSAN_CFLAGS})
+append_list_if(COMPILER_RT_HAS_FTLS_MODEL_INITIAL_EXEC
+  -ftls-model=initial-exec TSAN_DYNAMIC_CFLAGS)
+append_list_if(MSVC /DEBUG TSAN_DYNAMIC_LINK_FLAGS)
+
 # SANITIZER_COMMON_CFLAGS contains -fPIC, but it's performance-critical for
 # TSan runtime to be built with -fPIE to reduce the number of register spills.
 # On FreeBSD however it provokes linkage issue thus we disable it.
@@ -24,6 +31,9 @@ append_list_if(SANITIZER_LIMIT_FRAME_SIZE -Wframe-larger-than=530
                TSAN_RTL_CFLAGS)
 append_list_if(COMPILER_RT_HAS_WGLOBAL_CONSTRUCTORS_FLAG -Wglobal-constructors
                TSAN_RTL_CFLAGS)
+
+set(TSAN_RTL_DYNAMIC_CFLAGS ${TSAN_RTL_CFLAGS})
+list(REMOVE_ITEM TSAN_RTL_DYNAMIC_CFLAGS -fPIE)
 
 set(TSAN_SOURCES
   rtl/tsan_clock.cpp
