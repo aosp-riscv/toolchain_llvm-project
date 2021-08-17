@@ -34,6 +34,24 @@
       "parentUuid": "6e1df499_ac0a18f0",
       "revId": "6b0889cc0e9e868502342d9930a7717ff515e90b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a41478ad_e8993383",
+        "filename": "libcxx/utils/merge_archives.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1058860
+      },
+      "writtenOn": "2021-08-17T21:48:39Z",
+      "side": 0,
+      "message": "👍 You can cherry-pick it as a patch file using toolchain/llvm_android/cherrypick_cl.py.",
+      "parentUuid": "cea384d0_50f2c2a0",
+      "revId": "6b0889cc0e9e868502342d9930a7717ff515e90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
