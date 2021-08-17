@@ -16,6 +16,24 @@
       "message": "Did we find a solution for missing libffi on cloudtop?",
       "revId": "6b0889cc0e9e868502342d9930a7717ff515e90b",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea384d0_50f2c2a0",
+        "filename": "libcxx/utils/merge_archives.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-08-17T21:43:27Z",
+      "side": 0,
+      "message": "I submitted https://github.com/llvm/llvm-project/commit/d42be2d63ccf0cb38d218ee67746d6e108685a71 earlier. http://b/196424004 tracks fixing our prebuilts to not depend on it though, since we can\u0027t keep adding band aids forever.",
+      "parentUuid": "6e1df499_ac0a18f0",
+      "revId": "6b0889cc0e9e868502342d9930a7717ff515e90b",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
