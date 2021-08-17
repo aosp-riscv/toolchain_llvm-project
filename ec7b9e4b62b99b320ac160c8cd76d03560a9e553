@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b36b5def_f84aecc1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-08-17T21:31:16Z",
+      "side": 1,
+      "message": "There should be only one Change-Id, this is metadata for gerrit.\n\nI actually have no idea whether it\u0027s going to prefer the first or last value... probably the last? I\u0027d delete the first three.",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee1d132f_da502dc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-08-17T21:31:16Z",
+      "side": 1,
+      "message": "Looks right to me aside from the multiple change-ids in the commit message, which might confuse some tools.\n\n+1 since I\u0027d like srhines or pirama to review as well since I\u0027m not too familiar with this area.",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
