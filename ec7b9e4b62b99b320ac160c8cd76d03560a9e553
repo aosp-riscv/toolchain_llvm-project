@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c19ce5e8_07a29786",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1890456
+      },
+      "writtenOn": "2021-08-18T20:24:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b36b5def_f84aecc1",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ee1d132f_da502dc9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "```\n$ find clang-P25381165/lib64/clang/13.0.1/lib/linux/ -iname \"*tsan*.so\"\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-aarch64-android.so\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-x86_64-android.so\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-x86_64.so\n```\n\nTSan is only supported for 64-bit archs and we seem to have the expected shared libraries.\n\nLGTM for sending upstream.",
       "parentUuid": "4a9c04b2_9fb2268e",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e668dede_d8a92231",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1890456
+      },
+      "writtenOn": "2021-08-18T20:24:58Z",
+      "side": 1,
+      "message": "So I need to link and test with the shared libs? Like how to test? Test it in the ndk project? Cuz I am testing the tsan test in ndk project now.",
+      "parentUuid": "162a85ce_a42aec3f",
       "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
