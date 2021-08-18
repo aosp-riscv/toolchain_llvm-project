@@ -105,6 +105,24 @@
       "parentUuid": "162a85ce_a42aec3f",
       "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e170d49c_db40b644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-08-18T20:32:19Z",
+      "side": 1,
+      "message": "\u003e Test it in the ndk project? Cuz I am testing the tsan test in ndk project now.\n\nYep, exactly. Once that\u0027s done we\u0027ll work on getting the patch merged into the upstream LLVM project (local changes make it harder to update LLVM, so we want everything to go to the upstream project rather than directly here).",
+      "parentUuid": "e668dede_d8a92231",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
