@@ -51,6 +51,24 @@
       "parentUuid": "ee1d132f_da502dc9",
       "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "162a85ce_a42aec3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1058860
+      },
+      "writtenOn": "2021-08-18T01:13:36Z",
+      "side": 1,
+      "message": "```\n$ find clang-P25381165/lib64/clang/13.0.1/lib/linux/ -iname \"*tsan*.so\"\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-aarch64-android.so\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-x86_64-android.so\nclang-P25381165/lib64/clang/13.0.1/lib/linux/libclang_rt.tsan-x86_64.so\n```\n\nTSan is only supported for 64-bit archs and we seem to have the expected shared libraries.\n\nLGTM for sending upstream.",
+      "parentUuid": "4a9c04b2_9fb2268e",
+      "revId": "ec7b9e4b62b99b320ac160c8cd76d03560a9e553",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
