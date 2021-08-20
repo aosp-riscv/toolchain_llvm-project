@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df525163_2d35cda2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010056
+      },
+      "writtenOn": "2021-08-20T07:56:24Z",
+      "side": 1,
+      "message": "Heh, was going to say this needs a bug link, but you got it. Thanks!",
+      "revId": "f3ed42cfd47b04f4c3f478b63e7d6ce2b36c248d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
