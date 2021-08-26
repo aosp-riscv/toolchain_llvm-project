@@ -16,6 +16,24 @@
       "message": "\u003e Patch Set 1: Global-Approval+1\n\u003e \n\u003e By voting Global-Approval+1 the code-owners submit requirement is overridden by \u003cGERRIT_ACCOUNT_1099348\u003e\n\u003e \n\nThanks, Sam. I was just going to find someone to ask for GA+1, not realizing that I can\u0027t GA+1 my own change even with a CR+2 from other folks.",
       "revId": "d3e1bef2bc2bdec355d4fd0163aeb0aabbe4b66c",
       "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a39853c0_91ab99f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099348
+      },
+      "writtenOn": "2021-08-26T17:24:29Z",
+      "side": 1,
+      "message": "of course - we have this situation documented in bold here go/android-codereviews#large-scale-change-reviews but please let me know how we can make this clearer.",
+      "parentUuid": "d1dff586_8025f81c",
+      "revId": "d3e1bef2bc2bdec355d4fd0163aeb0aabbe4b66c",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
     }
   ]
 }
