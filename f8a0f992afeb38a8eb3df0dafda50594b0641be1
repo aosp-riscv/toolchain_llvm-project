@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "794586fa_7afc76a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010056
+      },
+      "writtenOn": "2021-08-26T17:03:42Z",
+      "side": 1,
+      "message": "Global Approval +1 to fix missing OWNERS problem",
+      "revId": "f8a0f992afeb38a8eb3df0dafda50594b0641be1",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
