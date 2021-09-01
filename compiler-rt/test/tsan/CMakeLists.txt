@@ -39,6 +39,12 @@ foreach(arch ${TSAN_TEST_ARCH})
   string(REPLACE ";" " " LIBDISPATCH_CFLAGS_STRING " ${COMPILER_RT_TEST_LIBDISPATCH_CFLAGS}")
   string(APPEND TSAN_TEST_TARGET_CFLAGS ${LIBDISPATCH_CFLAGS_STRING})
 
+  if(ANDROID OR APPLE)
+    set(TSAN_TEST_DYNAMIC True)
+  else()
+    set(TSAN_TEST_DYNAMIC False)
+  endif()
+
   string(TOUPPER ${arch} ARCH_UPPER_CASE)
   set(CONFIG_NAME ${ARCH_UPPER_CASE}Config)
 
@@ -49,6 +55,20 @@ foreach(arch ${TSAN_TEST_ARCH})
     ${CMAKE_CURRENT_SOURCE_DIR}/lit.cfg.py
     )
   list(APPEND TSAN_TESTSUITES ${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_NAME})
+
+  if(COMPILER_RT_TSAN_HAS_STATIC_RUNTIME)
+    string(TOLOWER "-${arch}-${OS_NAME}-dynamic" TSAN_TEST_CONFIG_SUFFIX)
+    set(TSAN_TEST_DYNAMIC True)
+    set(CONFIG_NAME ${ARCH_UPPER_CASE}${OS_NAME}DynamicConfig)
+    configure_lit_site_cfg(
+      ${CMAKE_CURRENT_SOURCE_DIR}/lit.site.cfg.py.in
+      ${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_NAME}/lit.site.cfg.py
+      MAIN_CONFIG
+      ${CMAKE_CURRENT_SOURCE_DIR}/lit.cfg.py
+      )
+    list(APPEND TSAN_DYNAMIC_TESTSUITES
+      ${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_NAME})
+  endif()
 endforeach()
 
 # iOS and iOS simulator test suites
@@ -98,11 +118,28 @@ if(COMPILER_RT_INCLUDE_TESTS)
   configure_lit_site_cfg(
     ${CMAKE_CURRENT_SOURCE_DIR}/Unit/lit.site.cfg.py.in
     ${CMAKE_CURRENT_BINARY_DIR}/Unit/lit.site.cfg.py)
+  if(COMPILER_RT_TSAN_HAS_STATIC_RUNTIME)
+    set(TSAN_TEST_DYNAMIC True)
+    configure_lit_site_cfg(
+      ${CMAKE_CURRENT_SOURCE_DIR}/Unit/lit.site.cfg.py.in
+      ${CMAKE_CURRENT_BINARY_DIR}/Unit/dynamic/lit.site.cfg.py)
+  endif()
   list(APPEND TSAN_TEST_DEPS TsanUnitTests)
   list(APPEND TSAN_TESTSUITES ${CMAKE_CURRENT_BINARY_DIR}/Unit)
+  if(COMPILER_RT_TSAN_HAS_STATIC_RUNTIME)
+    list(APPEND TSAN_DYNAMIC_TEST_DEPS TsanDynamicUnitTests)
+    list(APPEND TSAN_DYNAMIC_TESTSUITES ${CMAKE_CURRENT_BINARY_DIR}/Unit/dynamic)
+  endif()
 endif()
 
 add_lit_testsuite(check-tsan "Running ThreadSanitizer tests"
   ${TSAN_TESTSUITES}
   DEPENDS ${TSAN_TEST_DEPS})
 set_target_properties(check-tsan PROPERTIES FOLDER "Compiler-RT Tests")
+
+if(COMPILER_RT_TSAN_HAS_STATIC_RUNTIME)
+  add_lit_testsuite(check-tsan-dynamic "Running the ThreadSanitizer tests with dynamic runtime"
+                    ${TSAN_DYNAMIC_TESTSUITES}
+                    DEPENDS ${TSAN_DYNAMIC_TEST_DEPS})
+  set_target_properties(check-tsan-dynamic PROPERTIES FOLDER "Compiler-RT Misc")
+endif()
