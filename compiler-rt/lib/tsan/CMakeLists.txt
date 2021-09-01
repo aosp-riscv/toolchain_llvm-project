@@ -25,6 +25,12 @@ append_list_if(SANITIZER_LIMIT_FRAME_SIZE -Wframe-larger-than=530
 append_list_if(COMPILER_RT_HAS_WGLOBAL_CONSTRUCTORS_FLAG -Wglobal-constructors
                TSAN_RTL_CFLAGS)
 
+set(TSAN_RTL_DYNAMIC_CFLAGS ${TSAN_RTL_CFLAGS})
+list(REMOVE_ITEM TSAN_RTL_DYNAMIC_CFLAGS -fPIE)
+
+append_list_if(COMPILER_RT_HAS_LIBDL dl TSAN_DYNAMIC_LINK_LIBS)
+append_list_if(COMPILER_RT_HAS_LIBPTHREAD pthread TSAN_DYNAMIC_LINK_LIBS)
+
 set(TSAN_SOURCES
   rtl/tsan_clock.cpp
   rtl/tsan_debugging.cpp
@@ -245,6 +251,20 @@ else()
       PARENT_TARGET tsan)
     list(APPEND TSAN_RUNTIME_LIBRARIES clang_rt.tsan-${arch}
                                        clang_rt.tsan_cxx-${arch})
+    add_compiler_rt_runtime(clang_rt.tsan
+      SHARED
+      ARCHS ${arch}
+      SOURCES ${TSAN_SOURCES} ${TSAN_ASM_SOURCES}
+              $<TARGET_OBJECTS:RTInterception.${arch}>
+              $<TARGET_OBJECTS:RTSanitizerCommon.${arch}>
+              $<TARGET_OBJECTS:RTSanitizerCommonLibc.${arch}>
+              $<TARGET_OBJECTS:RTSanitizerCommonCoverage.${arch}>
+              $<TARGET_OBJECTS:RTSanitizerCommonSymbolizer.${arch}>
+              $<TARGET_OBJECTS:RTUbsan.${arch}>
+      ADDITIONAL_HEADERS ${TSAN_HEADERS}
+      CFLAGS ${TSAN_RTL_DYNAMIC_CFLAGS}
+      LINK_LIBS ${TSAN_DYNAMIC_LINK_LIBS}
+      PARENT_TARGET tsan)
     add_sanitizer_rt_symbols(clang_rt.tsan
       ARCHS ${arch}
       EXTRA rtl/tsan.syms.extra)

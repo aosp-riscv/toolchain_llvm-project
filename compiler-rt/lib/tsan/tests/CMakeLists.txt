@@ -4,6 +4,11 @@ add_custom_target(TsanUnitTests)
 set_target_properties(TsanUnitTests PROPERTIES
   FOLDER "Compiler-RT Tests")
 
+# ThreadSanitizer unit tests with dynamic runtime (on platforms where it's
+# not the default).
+add_custom_target(TsanDynamicUnitTests)
+set_target_properties(TsanDynamicUnitTests PROPERTIES FOLDER "Compiler-RT Tests")
+
 set(TSAN_UNITTEST_CFLAGS
   ${COMPILER_RT_UNITTEST_CFLAGS}
   ${COMPILER_RT_GTEST_CFLAGS}
@@ -54,6 +59,38 @@ else()
   list(APPEND LINK_FLAGS -lm)
   list(APPEND LINK_FLAGS ${COMPILER_RT_TEST_LIBDISPATCH_CFLAGS})
 endif()
+
+function(add_tsan_tests arch test_runtime)
+  cmake_parse_arguments(TEST "" "KIND" "CFLAGS" ${ARGN})
+
+  # Closure to keep the values.
+  function(generate_tsan_tests test_objects test_suite testname)
+    generate_compiler_rt_tests(${test_objects} ${test_suite} ${testname} ${arch}
+      COMPILE_DEPS ${TSAN_UNITTEST_HEADERS} ${TSAN_IGNORELIST_FILE}
+      DEPS gtest tsan
+      KIND ${TEST_KIND}
+      ${ARGN}
+      )
+    set("${test_objects}" "${${test_objects}}" PARENT_SCOPE)
+  endfunction()
+  set(TSAN_INST_TEST_OBJECTS)
+  generate_tsan_tests(TSAN_INST_TEST_OBJECTS TsanUnitTests
+    "Tsan-${arch}${TEST_KIND}-Test"
+    SUBDIR "default"
+    LINK_FLAGS ${TSAN_UNITTEST_INSTRUMENTED_LINK_FLAGS}
+    SOURCES ${TSAN_INST_TEST_SOURCES}
+    CFLAGS ${TSAN_UNITTEST_INSTRUMENTED_CFLAGS} ${TEST_CFLAGS})
+
+  if(COMPILER_RT_TSAN_HAS_STATIC_RUNTIME)
+    set(dynamic_test_name "Tsan-${arch}${TEST_KIND}-Dynamic-Test")
+    add_compiler_rt_test(TsanDynamicUnitTests "${dynamic_test_name}" "${arch}"
+        SUBDIR "dynamic"
+        OBJECTS ${TSAN_INST_TEST_OBJECTS}
+        DEPS tsan ${TSAN_INST_TEST_OBJECTS}
+        LINK_FLAGS ${TSAN_DYNAMIC_UNITTEST_INSTRUMENTED_LINK_FLAGS}
+        )
+  endif()
+endfunction()
 
 set(TSAN_RTL_HEADERS)
 foreach (header ${TSAN_HEADERS})

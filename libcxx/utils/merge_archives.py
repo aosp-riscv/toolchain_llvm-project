@@ -8,7 +8,6 @@
 #===----------------------------------------------------------------------===##
 
 from argparse import ArgumentParser
-from ctypes.util import find_library
 import distutils.spawn
 import glob
 import tempfile
