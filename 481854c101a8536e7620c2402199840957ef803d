@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18d890f_f83e48a4",
+        "filename": "compiler-rt/lib/tsan/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1043845
+      },
+      "writtenOn": "2021-09-23T23:32:11Z",
+      "side": 1,
+      "message": "This needs to include TSAN_PREINIT_SOURCES or a bunch of tests fail.",
+      "revId": "481854c101a8536e7620c2402199840957ef803d",
+      "serverId": "85c56323-6fa9-3386-8a01-6480fb634889"
+    }
+  ]
+}
