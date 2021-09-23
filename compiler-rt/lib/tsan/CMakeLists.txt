@@ -47,7 +47,6 @@ set(TSAN_SOURCES
   rtl/tsan_mman.cpp
   rtl/tsan_mutex.cpp
   rtl/tsan_mutexset.cpp
-  rtl/tsan_preinit.cpp
   rtl/tsan_report.cpp
   rtl/tsan_rtl.cpp
   rtl/tsan_rtl_mutex.cpp
@@ -62,6 +61,10 @@ set(TSAN_SOURCES
 
 set(TSAN_CXX_SOURCES
   rtl/tsan_new_delete.cpp
+  )
+
+set(TSAN_PREINIT_SOURCES
+  rtl/tsan_preinit.cpp
   )
 
 if(APPLE)
